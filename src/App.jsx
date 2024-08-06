@@ -7,7 +7,7 @@ import * as XLSX from "xlsx";
 
 import GGDChart from "./components/GGDChart";
 
-function App() {
+const App = () => {
   const [parsedData, setParsedData] = useState([]);
   const [data, setData] = useState([]);
 
@@ -34,6 +34,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Сетевой график</h1>
       <div className="App-cahrt">
         <GGDChart data={data} />
       </div>
@@ -43,6 +44,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

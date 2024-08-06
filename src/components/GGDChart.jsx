@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -10,25 +10,25 @@ const GGDChart = ({ data }) => {
     x: item.plan.date,
     y: item.plan.depth,
     operationCount: item.operationCount,
-    operationName: item.operationName, // Добавляем описание операции
+    operationName: item.operationName,
   }));
 
   const actualDepths = data.map((item) => ({
     x: item.fact.date,
-    y: item.plan.depth,
+    y: item.fact.depth,
     operationCount: item.operationCount,
-    operationName: item.operationName, // Добавляем описание операции
+    operationName: item.operationName,
   }));
 
   // Настраиваем параметры графика ГГД
   const options = {
     chart: {
       type: "line",
-      width: "80%",
-      height: 600,
+      width: 1500,
+      height: 700,
     },
     title: {
-      text: "Сетевой график",
+      text: "",
     },
     xAxis: {
       type: "datetime",
