@@ -2,7 +2,7 @@ import React, { act } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { millisecondsToFormattedString } from "../utils/timeConverters";
+import { millisecondsToFormattedString } from "../utils/timeConverter";
 
 const GGDChart = ({ data }) => {
   // Преобразование данных в нужный формат

@@ -1,36 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 import "./App.css";
-
-import dataExtractor from "./utils/dataExtractor";
-
-import * as XLSX from "xlsx";
 
 import GGDChart from "./components/GGDChart";
 
 const App = () => {
-  const [parsedData, setParsedData] = useState([]);
+  const [file, setFile] = useState(null);
   const [data, setData] = useState([]);
 
-  const handleFileUpload = (inputEvent) => {
-    const file = inputEvent.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      const binaryStr = event.target.result;
-      const workbook = XLSX.read(binaryStr, { type: "binary" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const parsedData = XLSX.utils.sheet_to_json(sheet);
-      setParsedData(parsedData);
-    };
-
-    reader.readAsBinaryString(file);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
-  useEffect(() => {
-    const res = dataExtractor(parsedData);
-    setData(res);
-  }, [parsedData]);
+  const handleUpload = async () => {
+    if (!file) {
+      console.error("Файл не выбран");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post("http://localhost:3005/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      console.error("Ошибка загрузки файла", error);
+    }
+  };
 
   return (
     <div className="App">
@@ -40,7 +42,8 @@ const App = () => {
       </div>
 
       <div>
-        <input type="file" onChange={handleFileUpload} />
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Загрузить</button>
       </div>
     </div>
   );
